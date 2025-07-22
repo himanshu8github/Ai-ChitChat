@@ -3,8 +3,8 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 
 import chatRoutes from './routes/chat.route.js';
-import { sendOtpRouter } from "./routes/sendOtp.route.js";
-import { verifyOtpRouter } from "./routes/verifyOtp.route.js";
+import sendOtpRouter  from "./routes/sendOtp.route.js";
+import verifyOtpRouter  from "./routes/verifyOtp.route.js";
 
 dotenv.config();
 const app = express();

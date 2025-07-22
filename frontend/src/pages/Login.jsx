@@ -1,8 +1,7 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { Link, useNavigate } from "react-router-dom";
+import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase/config";
-
 
 const Login = () => {
   const navigate = useNavigate();
@@ -20,64 +19,71 @@ const Login = () => {
       setError("Password should be at least 6 characters.");
       return false;
     }
-    setError(""); 
+    setError("");
     return true;
   };
-
 
   const sendData = async () => {
     if (!validateInputs()) return;
 
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, pass);
-
       console.log("Login successful", userCredential.user);
       navigate("/chat");
-
-
     } catch (err) {
       console.error(err.message);
       setError("Login failed. Please check your credentials.");
     }
   };
 
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-purple-700 to-indigo-900 text-white">
+      {/* Navbar */}
+      <nav className="flex justify-between items-center px-6 py-4 bg-purple-900 shadow">
+        <h1 className="text-xl font-bold">ChatBot</h1>
+        <div className="space-x-4">
+          <Link to="/" className="hover:text-gray-300">
+            Home
+          </Link>
+          <Link to="/signup" className="hover:text-gray-300">
+            Signup
+          </Link>
+        </div>
+      </nav>
 
+      {/* Login Form */}
+      <div className="flex justify-center items-center h-[calc(100vh-80px)]">
+        <div className="bg-white text-black p-8 rounded-lg shadow-lg w-80">
+          <h2 className="text-2xl font-bold mb-4 text-center">Login</h2>
 
-   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-700 to-indigo-900 text-white">
-      <div className="bg-white text-black p-8 rounded-lg shadow-lg w-80">
-        <h2 className="text-2xl font-bold mb-4 text-center">Login</h2>
+          <input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="w-full p-2 mb-4 border rounded"
+          />
 
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          className="w-full p-2 mb-4 border rounded"
-        />
+          <input
+            type="password"
+            placeholder="Password"
+            value={pass}
+            onChange={(e) => setPass(e.target.value)}
+            className="w-full p-2 mb-4 border rounded"
+          />
 
-        <input
-          type="password"
-          placeholder="Password"
-          value={pass}
-          onChange={(e) => setPass(e.target.value)}
-          className="w-full p-2 mb-4 border rounded"
-        />
+          {error && <p className="text-red-600 text-sm mb-2">{error}</p>}
 
-        {error && <p className="text-red-600 text-sm mb-2">{error}</p>}
-
-        <button
-          onClick={sendData}
-          className="bg-purple-700 hover:bg-purple-800 text-white font-bold py-2 px-4 rounded w-full"
-        >
-          Login
-        </button>
+          <button
+            onClick={sendData}
+            className="bg-purple-700 hover:bg-purple-800 text-white font-bold py-2 px-4 rounded w-full"
+          >
+            Login
+          </button>
+        </div>
       </div>
     </div>
   );
 };
-
-
-
 
 export default Login;

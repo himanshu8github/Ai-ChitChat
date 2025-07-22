@@ -1,43 +1,35 @@
 import express from "express";
-import nodemailer from "nodemailer";
+import { transporter } from "../utils/sendEmail.js"; 
+import dotenv from "dotenv";
+
+dotenv.config();
+export const otpStore = {}; 
 
 const router = express.Router();
 
-const otpStore = {};
-
-const transporter = nodemailer.createTransport({
-  service: "gmail",
-  auth: {
-    user: process.env.MAIL_USER,       
-    pass: process.env.MAIL_PASS,      
-  },
-});
-
 router.post("/", async (req, res) => {
-  const { email } = req.body;
+  const { email, otp } = req.body;
 
-  if (!email) return res.status(400).json({ success: false, message: "Email is required" });
-
-  const otp = Math.floor(100000 + Math.random() * 900000);
-  const expiresAt = Date.now() + 10 * 60 * 1000; // 10 minutes
-
-  otpStore[email] = { otp, expiresAt };
-
-  const mailOptions = {
-    from: `"AI-Chat" <${process.env.MAIL_USER}>`,
-    to: email,
-    subject: "Your AI-Chat Email Verification OTP",
-    text: `Your OTP is: ${otp}. It will expire in 10 minutes.`,
-  };
+  if (!email || !otp) {
+    return res.status(400).json({ error: "Email and OTP required" });
+  }
 
   try {
+    otpStore[email] = otp;
+
+    const mailOptions = {
+      from: `"SafeChat" <${process.env.MAIL_USER}>`,
+      to: email,
+      subject: "Verify your email (OTP)",
+      text: `Your OTP is: ${otp}`,
+    };
+
     await transporter.sendMail(mailOptions);
-    res.json({ success: true, message: "OTP sent to email" });
+    res.status(200).json({ message: "OTP sent successfully!" });
   } catch (error) {
     console.error("Error sending OTP:", error);
-    res.status(500).json({ success: false, message: "Failed to send OTP" });
+    res.status(500).json({ error: "Failed to send OTP." });
   }
 });
 
-export { router as sendOtpRouter };
-export { otpStore }; 
+export default router;

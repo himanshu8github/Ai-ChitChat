@@ -1,33 +1,22 @@
 import express from "express";
-import { otpStore } from "./sendOtp.route.js";
+import { otpStore } from "./sendOtp.route.js"; 
 
 const router = express.Router();
 
-router.post("/", (req, res) => {
-
+router.post("/verify-otp", (req, res) => {
   const { email, otp } = req.body;
 
   if (!email || !otp) {
-    return res.status(400).json({ success: false, message: "Email and OTP required" });
+    return res.status(400).json({ error: "Email and OTP required" });
   }
 
-  const stored = otpStore[email];
-
-  if (!stored) {
-    return res.status(400).json({ success: false, message: "OTP not found. Please request again." });
+  const storedOtp = otpStore[email];
+  if (storedOtp === otp) {
+    res.status(200).json({ message: "OTP verified successfully!" });
+    delete otpStore[email]; 
+  } else {
+    res.status(400).json({ error: "Invalid OTP." });
   }
-
-  if (Date.now() > stored.expiresAt) {
-    delete otpStore[email];
-    return res.status(400).json({ success: false, message: "OTP expired. Please request again." });
-  }
-
-  if (stored.otp.toString() !== otp.toString()) {
-    return res.status(400).json({ success: false, message: "Invalid OTP" });
-  }
-
-  delete otpStore[email];
-  return res.json({ success: true, message: "OTP verified" });
 });
 
-export { router as verifyOtpRouter };
+export default router;
