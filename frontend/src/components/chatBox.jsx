@@ -1,8 +1,9 @@
-import { useState } from 'react';
-import axios from 'axios';
+import { useState } from "react";
+import axios from "axios";
+import Navbar from "./Navbar";
 
 const ChatBox = () => {
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState("");
   const [chat, setChat] = useState([]);
 
   const handleSubmit = async (e) => {
@@ -16,40 +17,77 @@ const ChatBox = () => {
 
       setChat([
         ...chat,
-        { from: 'user', text: message },
-        { from: 'bot', text: res.data.reply }
+        { from: "user", text: message },
+        { from: "bot", text: res.data.reply },
       ]);
-      setMessage('');
+      setMessage("");
     } catch (err) {
-      console.error('Chat API error:', err.response?.data || err.message);
+      console.error("Chat API error:", err.response?.data || err.message);
       alert("Something went wrong! Check console.");
     }
   };
 
+  // Clean and split text into normal text and code blocks
   const cleanResponse = (text) => {
-    return text
-      .replace(/\*\*(.*?)\*\*/g, '$1')
-      .replace(/\*(.*?)\*/g, '$1')
-      .replace(/[*-] /g, '')
-      .replace(/([.?!])\s*/g, '$1\n\n')
+    const parts = [];
+    const codeBlockRegex = /```([\s\S]*?)```/g;
+    let lastIndex = 0;
+    let match;
+
+    while ((match = codeBlockRegex.exec(text)) !== null) {
+      // Push text before code block (clean markdown formatting)
+      const before = text.slice(lastIndex, match.index)
+        .replace(/\*\*(.*?)\*\*/g, "$1")
+        .replace(/\*(.*?)\*/g, "$1")
+        .replace(/^[-*]\s+/gm, "")
+        .replace(/(\n){3,}/g, "\n\n")
+        .trim();
+      if (before) parts.push({ type: "text", content: before });
+
+      // Push code block content
+      parts.push({ type: "code", content: match[1].trim() });
+      lastIndex = codeBlockRegex.lastIndex;
+    }
+
+    // Push remaining text after last code block
+    const after = text.slice(lastIndex)
+      .replace(/\*\*(.*?)\*\*/g, "$1")
+      .replace(/\*(.*?)\*/g, "$1")
+      .replace(/^[-*]\s+/gm, "")
+      .replace(/(\n){3,}/g, "\n\n")
       .trim();
+    if (after) parts.push({ type: "text", content: after });
+
+    return parts;
+  };
+
+  // Render cleaned response parts as JSX with formatting
+  const renderCleanedText = (text) => {
+    const parts = cleanResponse(text);
+    return parts.map((part, idx) => {
+      if (part.type === "code") {
+        return (
+          <pre
+            key={idx}
+            className="bg-gray-100 p-3 rounded-md overflow-x-auto whitespace-pre-wrap"
+          >
+            <code>{part.content}</code>
+          </pre>
+        );
+      }
+      // For normal text, preserve line breaks
+      return (
+        <p key={idx} style={{ whiteSpace: "pre-wrap", marginBottom: "1em" }}>
+          {part.content}
+        </p>
+      );
+    });
   };
 
   return (
     <div className="min-h-screen w-full flex flex-col bg-[#f0f4f8]">
-      {/* Navbar */}
-      <nav className="bg-gradient-to-r from-[#0f172a] to-[#1e293b] text-white p-4 flex justify-between items-center shadow-md">
-        <h1 className="text-xl font-bold tracking-wide">BlueBot</h1>
-        <div className="space-x-4">
-          <button className="bg-white text-[#1e293b] font-medium px-4 py-1 rounded hover:bg-gray-100 transition">
-            Home
-          </button>
-          <button className="bg-red-600 hover:bg-red-700 transition px-4 py-1 rounded text-white font-medium">
-            Logout
-          </button>
-        </div>
-      </nav>
-
+    
+      <Navbar />
       {/* Chat Area */}
       <div className="flex-1 flex flex-col w-full px-4 py-6">
         <div className="flex-1 overflow-y-auto space-y-3">
@@ -57,12 +95,14 @@ const ChatBox = () => {
             <div
               key={idx}
               className={`p-3 rounded-xl max-w-[90%] ${
-                msg.from === 'user'
-                  ? 'ml-auto bg-blue-100 text-right text-blue-900'
-                  : 'mr-auto bg-slate-100 text-left text-slate-800'
+                msg.from === "user"
+                  ? "ml-auto bg-blue-100 text-right text-blue-900"
+                  : "mr-auto bg-slate-100 text-left text-slate-800"
               }`}
             >
-              {msg.from === 'bot' ? cleanResponse(msg.text) : msg.text}
+              {msg.from === "bot"
+                ? renderCleanedText(msg.text)
+                : msg.text}
             </div>
           ))}
         </div>

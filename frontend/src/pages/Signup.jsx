@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { getAuth, createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, sendEmailVerification, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar"; 
@@ -13,6 +13,12 @@ const Signup = () => {
 
   const navigate = useNavigate();
   const auth = getAuth();
+
+  // export const otpStore = {};
+
+  const generateOtp = () => {
+  return Math.floor(100000 + Math.random() * 900000).toString();
+};
 
   const handleSignup = async () => {
     if (loading) return;
@@ -32,13 +38,22 @@ const Signup = () => {
       const userCredential = await createUserWithEmailAndPassword(auth, email, pass);
       const uid = userCredential.user.uid;
 
+       const otp = generateOtp();
+
+        await sendEmailVerification(user);
+
+      alert("Verification email sent! Please check your inbox.");
+
       // Send OTP to backend
-      await axios.post("http://localhost:5000/api/user/send-otp", {
-        name,
-        username,
-        email,
-        uid,
-      });
+    await axios.post("http://localhost:5000/api/user/send-otp", {
+     name,
+  username,
+  email,
+  uid,
+  otp,        
+      signupType: "manual",
+    });
+
 
       alert("OTP sent to your email!");
       navigate("/verify-otp", { state: { uid, email } });
@@ -62,12 +77,13 @@ const Signup = () => {
       const uid = user.uid;
       const username = email.split("@")[0];
 
-      await axios.post("http://localhost:5000/api/user/send-otp", {
-        name,
-        username,
-        email,
-        uid,
-      });
+    // Google signup 
+await axios.post("http://localhost:5000/api/user/send-otp", {
+ 
+  email,
+
+  signupType: "google", 
+});
 
       alert("OTP sent to your email!");
       navigate("/verify-otp", { state: { uid, email } });

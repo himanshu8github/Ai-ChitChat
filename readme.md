@@ -1,0 +1,1 @@
+Remember that otpStore is just a temporary in-memory object. It will be reset when your server restarts. For production, you’d want to store OTPs in a database or cache like Redis.
