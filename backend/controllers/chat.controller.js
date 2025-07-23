@@ -4,20 +4,13 @@ export const handleChat = async (req, res) => {
   const { message } = req.body;
 
   try {
-    const endpoint = process.env.REACT_APP_GEMINI_API_KEY;
-    const apiKey = process.env.GEMINI_API_KEY;
+    const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${process.env.GEMINI_API_KEY}`;
 
-    const geminiRes = await axios.post(
-      `${endpoint}?key=${apiKey}`,
-      {
-        contents: [
-          {
-            role: "user",
-            parts: [{ text: message }]
-          }
-        ]
-      }
-    );
+    const cleanPrompt = `Reply in plain text. Do not use markdown or bullet points. Just give a short, clean answer. Here's the question: ${message}`;
+
+    const geminiRes = await axios.post(endpoint, {
+      contents: [{ parts: [{ text: cleanPrompt }] }],
+    });
 
     const reply = geminiRes.data.candidates?.[0]?.content?.parts?.[0]?.text || "No reply.";
     res.json({ reply });

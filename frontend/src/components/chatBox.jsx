@@ -6,7 +6,6 @@ import gsap from "gsap";
 
 const ChatBox = () => {
   const navigate = useNavigate();
-  const { chatId } = useParams();
   const [message, setMessage] = useState("");
   const [chat, setChat] = useState([]);
   const chatContainerRef = useRef(null);
@@ -30,7 +29,7 @@ const ChatBox = () => {
     try {
       const res = await axios.post("http://localhost:5000/api/chat", {
         message: message,
-        chatId: chatId === "new" ? null : chatId,
+        // chatId: chatId === "new" ? null : chatId,
       });
 
       setChat((prevChat) => [
@@ -40,9 +39,7 @@ const ChatBox = () => {
       ]);
       setMessage("");
 
-      if (chatId === "new" && res.data.chatId) {
-        navigate(`/chat/${res.data.chatId}`);
-      }
+     
     } catch (err) {
       console.error("Chat API error:", err.response?.data || err.message);
       alert("Something went wrong! Check console.");

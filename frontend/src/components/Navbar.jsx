@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { onAuthStateChanged, signOut } from "firebase/auth";
-import { auth } from "../firebase/config";
+import { auth, provider } from "../firebase/config";
 import { gsap } from "gsap";
 
 const Navbar = () => {
