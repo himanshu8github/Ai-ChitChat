@@ -24,14 +24,14 @@ export const sendOtp = async (req, res) => {
     otpStore[email] = otp;
 
     const mailOptions = {
-      from: `"SafeChat" <${process.env.MAIL_USER}>`,
+      from: `"Ai-ChitChat" <${process.env.MAIL_USER}>`,
       to: email,
       subject: "Verify your email (OTP)",
       text: `Your OTP is: ${otp}`,
     };
 
     await transporter.sendMail(mailOptions);
-     console.log("✅ Email sent to", email); 
+     console.log(" Email sent to", email); 
     res.status(200).json({ message: "OTP sent successfully!" });
   } catch (error) {
     console.error("Error sending OTP:", error);

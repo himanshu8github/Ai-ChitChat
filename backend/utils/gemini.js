@@ -1,7 +1,8 @@
 import axios from 'axios';
 
 export const getGeminiResponse = async (prompt) => {
-  const endpoint = '"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent"';
+  const endpoint =  process.env.REACT_APP_GEMINI_API_KEY;
+;
 
 const cleanPrompt = `Reply in plain text. Do not use markdown or bullet points. Just give a short, clean answer. Here's the question: ${prompt}`;
 

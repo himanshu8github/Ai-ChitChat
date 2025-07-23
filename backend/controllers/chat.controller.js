@@ -4,8 +4,11 @@ export const handleChat = async (req, res) => {
   const { message } = req.body;
 
   try {
+    const endpoint = process.env.REACT_APP_GEMINI_API_KEY;
+    const apiKey = process.env.GEMINI_API_KEY;
+
     const geminiRes = await axios.post(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${process.env.GEMINI_API_KEY}`,
+      `${endpoint}?key=${apiKey}`,
       {
         contents: [
           {

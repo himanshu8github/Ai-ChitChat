@@ -1,17 +1,26 @@
 import mongoose from 'mongoose';
-import bcrypt from 'bcrypt';
+
 
 const userSchema = new mongoose.Schema({
-    uid: { type: String, required: true,  unique: true, },
-   name: String,
+  name: String,
+  username: String,
   email: { type: String, required: true, unique: true },
-    username: { type: String, required: true, unique: true,},
-  password: { type: String, required: true },
+  uid: { type: String, required: true, unique: true },
+  
+ password: {
+  type: String,
+  required: function () {
+    return this.signupType === 'manual';
+  },
+},
+signupType: {
+  type: String,
+  required: true,
+  enum: ['manual', 'google'],
+},
 
-}, 
- {timestamps : true},
+});
 
-)
 
 const User = mongoose.model("User", userSchema);
 export default User;

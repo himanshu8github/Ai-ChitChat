@@ -7,7 +7,7 @@ const VerifyOtp = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const email = location.state?.email; // Get email from navigation state
+  const email = location.state?.email; 
 
   const handleVerify = async () => {
 
