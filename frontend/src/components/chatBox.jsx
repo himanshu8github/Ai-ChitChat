@@ -27,7 +27,7 @@ const ChatBox = () => {
     if (!message.trim()) return;
 
     try {
-     axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/chat`, { message });
+     axios.post(`${process.env.VITE_BACKEND_URL}/api/chat`, { message });
 
 
       setChat((prevChat) => [
