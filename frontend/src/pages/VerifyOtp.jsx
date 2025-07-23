@@ -17,7 +17,9 @@ const VerifyOtp = () => {
     }
 
     try {
-      const res = await axios.post("http://localhost:5000/api/user/verify-otp", {
+
+      const backendUrl = process.env.BACKEND_URL;
+      const res = await axios.post(`${backendUrl}/api/user/verify-otp`, {
         email,
         otp,
       });

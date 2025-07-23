@@ -27,10 +27,8 @@ const ChatBox = () => {
     if (!message.trim()) return;
 
     try {
-      const res = await axios.post("http://localhost:5000/api/chat", {
-        message: message,
-        // chatId: chatId === "new" ? null : chatId,
-      });
+     axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/chat`, { message });
+
 
       setChat((prevChat) => [
         ...prevChat,

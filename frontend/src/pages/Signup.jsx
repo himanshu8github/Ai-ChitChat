@@ -65,7 +65,9 @@ const Signup = () => {
       const uid = user.uid;
       const otp = generateOtp();
 
-      await axios.post("http://localhost:5000/api/user/send-otp", {
+      const backendUrl = process.env.BACKEND_URL;
+
+      await axios.post(`${backendUrl}/api/user/send-otp`, {
         name,
         username,
         email,
@@ -95,7 +97,9 @@ const Signup = () => {
       const uid = user.uid;
       const username = email.split("@")[0];
 
-      await axios.post("http://localhost:5000/api/user/signup", {
+          const backendUrl = process.env.BACKEND_URL;
+
+      await axios.post(`${backendUrl}/api/user/signup`, {
         name,
         username,
         email,
