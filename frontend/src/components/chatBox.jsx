@@ -26,7 +26,7 @@ const ChatBox = () => {
     if (!message.trim()) return;
 
     try {
-      
+
       const res = await axios.post(
         `${import.meta.env.VITE_BACKEND_URL}/api/chat`,
         { message }
@@ -34,8 +34,9 @@ const ChatBox = () => {
 
 
       const reply = res?.data?.reply;
-      if (!reply || typeof reply !== "string") {
-  alert("Bot did not respond correctly.");
+  if (!reply || typeof reply !== "string") {
+  console.error("Unexpected response:", res.data);
+  alert("Bot did not respond correctly. Check console for details.");
   return;
 }
 

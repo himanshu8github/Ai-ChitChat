@@ -12,10 +12,20 @@ export const handleChat = async (req, res) => {
       contents: [{ parts: [{ text: cleanPrompt }] }],
     });
 
-    const reply = geminiRes.data.candidates?.[0]?.content?.parts?.[0]?.text || "No reply.";
+    console.log("Gemini raw response:", JSON.stringify(geminiRes.data, null, 2));
+
+    const reply =
+      geminiRes?.data?.candidates?.[0]?.content?.parts?.[0]?.text?.trim();
+
+    if (!reply) {
+      return res.status(500).json({ error: "No valid reply from Gemini API" });
+    }
+
     res.json({ reply });
   } catch (error) {
     console.error("Gemini API error:", error.response?.data || error.message);
-    res.status(500).json({ error: "Gemini API error", detail: error.response?.data || error.message });
+    res
+      .status(500)
+      .json({ error: "Gemini API error", detail: error.response?.data || error.message });
   }
 };
