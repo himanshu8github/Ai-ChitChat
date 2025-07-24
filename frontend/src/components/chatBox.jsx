@@ -26,15 +26,23 @@ const ChatBox = () => {
     if (!message.trim()) return;
 
     try {
+      
       const res = await axios.post(
         `${import.meta.env.VITE_BACKEND_URL}/api/chat`,
         { message }
       );
 
+
+      const reply = res?.data?.reply;
+      if (!reply || typeof reply !== "string") {
+  alert("Bot did not respond correctly.");
+  return;
+}
+
       setChat((prevChat) => [
         ...prevChat,
         { from: "user", text: message },
-        { from: "bot", text: res.data.reply },
+        { from: "bot", text: reply },
       ]);
       setMessage("");
     } catch (err) {
@@ -79,6 +87,9 @@ const ChatBox = () => {
   };
 
   const renderCleanedText = (text) => {
+
+  if (typeof text !== "string") return null;  
+
     const parts = cleanResponse(text);
     return parts.map((part, idx) => {
       if (part.type === "code") {
