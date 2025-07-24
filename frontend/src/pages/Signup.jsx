@@ -65,7 +65,7 @@ const Signup = () => {
       const uid = user.uid;
       const otp = generateOtp();
 
-      const backendUrl = process.env.VITE_BACKEND_URL;
+      const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
       await axios.post(`${backendUrl}/api/user/send-otp`, {
         name,
@@ -97,7 +97,7 @@ const Signup = () => {
       const uid = user.uid;
       const username = email.split("@")[0];
 
-          const backendUrl = process.env.VITE_BACKEND_URL;
+          const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
       await axios.post(`${backendUrl}/api/user/signup`, {
         name,

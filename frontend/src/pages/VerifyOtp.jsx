@@ -18,7 +18,7 @@ const VerifyOtp = () => {
 
     try {
 
-      const backendUrl = process.env.VITE_BACKEND_URL;
+      const backendUrl = import.meta.env.VITE_BACKEND_URL;
       const res = await axios.post(`${backendUrl}/api/user/verify-otp`, {
         email,
         otp,
