@@ -34,6 +34,7 @@ const ChatBox = () => {
 
 
       const reply = res?.data?.reply;
+      
   if (!reply || typeof reply !== "string") {
   console.error("Unexpected response:", res.data);
   alert("Bot did not respond correctly. Check console for details.");
