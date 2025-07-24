@@ -17,11 +17,17 @@ export const handleChat = async (req, res) => {
     const reply =
       geminiRes?.data?.candidates?.[0]?.content?.parts?.[0]?.text?.trim();
 
-    if (!reply) {
-      return res.status(500).json({ error: "No valid reply from Gemini API" });
-    }
+ 
+if (!reply) {
+  console.error("Gemini API did not return valid reply:", geminiRes.data);
+  return res
+    .status(500)
+    .json({ error: "No valid reply from Gemini API" });
+}
 
     res.json({ reply });
+
+    
   } catch (error) {
     console.error("Gemini API error:", error.response?.data || error.message);
     res
