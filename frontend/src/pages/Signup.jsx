@@ -115,68 +115,69 @@ const Signup = () => {
     }
   };
 
-  return (
-    <>
-      <Navbar />
-      <div className="bg-gradient-to-br from-[#5e7ce2] to-[#4472ca] min-h-[calc(100vh-56px)] pt-2 px-4 flex justify-center items-start">
-        <div
-          ref={formRef}
-          className="bg-white p-8 rounded-xl shadow-xl w-full max-w-md mt-2"
+ return (
+  <>
+    <Navbar />
+    <div className="bg-gradient-to-br from-[#6a040f] to-[#9d0208] min-h-[calc(100vh-56px)] pt-2 px-4 flex justify-center items-start">
+      <div
+        ref={formRef}
+        className="bg-white p-8 rounded-xl shadow-xl w-full max-w-md mt-2 border border-[#9d0208]"
+      >
+        <h1 className="text-3xl font-bold mb-6 text-center text-[#9d0208]">
+          Create an Account
+        </h1>
+
+        <input
+          className="border p-2 mb-3 w-full rounded focus:ring-2 focus:ring-[#9d0208]"
+          type="text"
+          placeholder="Full Name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
+        <input
+          className="border p-2 mb-3 w-full rounded focus:ring-2 focus:ring-[#9d0208]"
+          type="text"
+          placeholder="Username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+        />
+        <input
+          className="border p-2 mb-3 w-full rounded focus:ring-2 focus:ring-[#9d0208]"
+          type="email"
+          placeholder="Email Address"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <input
+          className="border p-2 mb-4 w-full rounded focus:ring-2 focus:ring-[#9d0208]"
+          type="password"
+          placeholder="Password"
+          value={pass}
+          onChange={(e) => setPass(e.target.value)}
+        />
+
+        <button
+          onClick={handleSignup}
+          disabled={loading}
+          className="bg-[#9d0208] text-white w-full py-2 rounded hover:bg-[#6a040f] transition-all duration-200 font-semibold"
         >
-          <h1 className="text-3xl font-bold mb-6 text-center text-[#5e7ce2]">
-            Create an Account
-          </h1>
+          {loading ? "Signing Up..." : "Sign Up"}
+        </button>
 
-          <input
-            className="border p-2 mb-3 w-full rounded focus:ring-2 focus:ring-[#5e7ce2]"
-            type="text"
-            placeholder="Full Name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-          <input
-            className="border p-2 mb-3 w-full rounded focus:ring-2 focus:ring-[#5e7ce2]"
-            type="text"
-            placeholder="Username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
-          <input
-            className="border p-2 mb-3 w-full rounded focus:ring-2 focus:ring-[#5e7ce2]"
-            type="email"
-            placeholder="Email Address"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <input
-            className="border p-2 mb-4 w-full rounded focus:ring-2 focus:ring-[#5e7ce2]"
-            type="password"
-            placeholder="Password"
-            value={pass}
-            onChange={(e) => setPass(e.target.value)}
-          />
+        <div className="my-4 text-center text-gray-500 font-medium">OR</div>
 
-          <button
-            onClick={handleSignup}
-            disabled={loading}
-            className="bg-[#5e7ce2] text-white w-full py-2 rounded hover:bg-[#3d5fc3] transition-all duration-200 font-semibold"
-          >
-            {loading ? "Signing Up..." : "Sign Up"}
-          </button>
-
-          <div className="my-4 text-center text-gray-500 font-medium">OR</div>
-
-          <button
-            onClick={handleGoogleSignup}
-            className="flex items-center justify-center bg-white text-gray-700 border border-gray-300 w-full py-2 rounded hover:bg-gray-100 transition duration-200 font-semibold"
-          >
-            <GoogleIcon />
-            Sign Up with Google
-          </button>
-        </div>
+        <button
+          onClick={handleGoogleSignup}
+          className="flex items-center justify-center bg-white text-gray-700 border border-gray-300 w-full py-2 rounded hover:bg-gray-100 transition duration-200 font-semibold"
+        >
+          <GoogleIcon />
+          Sign Up with Google
+        </button>
       </div>
-    </>
-  );
+    </div>
+  </>
+);
+
 };
 
 export default Signup;

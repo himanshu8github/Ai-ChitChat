@@ -13,7 +13,7 @@ const ChatBox = () => {
   useEffect(() => {
     if (chatContainerRef.current) {
       gsap.from(chatContainerRef.current, {
-        opacity: 100,
+        opacity: 0,
         y: 20,
         duration: 0.7,
         ease: "power2.out",
@@ -26,20 +26,18 @@ const ChatBox = () => {
     if (!message.trim()) return;
 
     try {
-
       const res = await axios.post(
         `${import.meta.env.VITE_BACKEND_URL}/api/chat`,
         { message }
       );
 
-
       const reply = res?.data?.reply;
-      
-  if (!reply || typeof reply !== "string") {
-  console.error("Unexpected response:", res.data);
-  alert("Bot did not respond correctly. Check console for details.");
-  return;
-}
+
+      if (!reply || typeof reply !== "string") {
+        console.error("Unexpected response:", res.data);
+        alert("Bot did not respond correctly. Check console for details.");
+        return;
+      }
 
       setChat((prevChat) => [
         ...prevChat,
@@ -89,8 +87,7 @@ const ChatBox = () => {
   };
 
   const renderCleanedText = (text) => {
-
-  if (typeof text !== "string") return null;  
+    if (typeof text !== "string") return null;
 
     const parts = cleanResponse(text);
     return parts.map((part, idx) => {
@@ -107,7 +104,7 @@ const ChatBox = () => {
       return (
         <p
           key={idx}
-          className="text-black font-semibold whitespace-pre-wrap text-sm md:text-base"
+          className="text-[#590d22] font-semibold whitespace-pre-wrap text-sm md:text-base"
         >
           {part.content}
         </p>
@@ -116,26 +113,16 @@ const ChatBox = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-gray-50 text-black">
+    <div className="min-h-screen flex flex-col bg-[#590d22] text-white">
       <Navbar />
       <main className="flex-1 flex flex-col px-4 py-4 sm:px-6 sm:py-6 max-w-4xl mx-auto w-full">
-        {/* New Chat Button
-        <div className="flex justify-end mb-2">
-          <button
-            onClick={handleNewChat}
-            className="text-sm bg-gray-200 hover:bg-gray-300 text-black px-4 py-2 rounded-md font-medium transition"
-          >
-            + New Chat
-          </button>
-        </div> */}
-
         {/* Chat Window */}
         <div
           ref={chatContainerRef}
-          className="flex-1 overflow-y-auto space-y-4 mb-4 scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100"
+          className="flex-1 overflow-y-auto space-y-4 mb-4 scrollbar-thin scrollbar-thumb-[#9d0208] scrollbar-track-[#800f2f]/40"
         >
           {chat.length === 0 && (
-            <p className="text-center text-gray-500 mt-10 select-none">
+            <p className="text-center text-white/60 mt-10 select-none">
               Start chatting with Ai-ChitChat...
             </p>
           )}
@@ -144,8 +131,8 @@ const ChatBox = () => {
               key={idx}
               className={`p-3 sm:p-4 rounded-xl max-w-[90%] break-words ${
                 msg.from === "user"
-                  ? "ml-auto bg-blue-100 text-right text-black font-bold"
-                  : "mr-auto bg-gray-100 text-left text-gray-800 font-bold"
+                  ? "ml-auto bg-[#9d0208] text-right text-white font-bold"
+                  : "mr-auto bg-[#ffccd5] text-left text-[#590d22] font-semibold"
               }`}
             >
               {msg.from === "bot" ? renderCleanedText(msg.text) : msg.text}
@@ -154,17 +141,20 @@ const ChatBox = () => {
         </div>
 
         {/* Message Input */}
-        <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-2 sm:gap-3 w-full">
+        <form
+          onSubmit={handleSubmit}
+          className="flex flex-col sm:flex-row gap-2 sm:gap-3 w-full"
+        >
           <input
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             placeholder="Ask Ai-ChitChat anything..."
-            className="flex-1 rounded-md border border-gray-300 bg-white px-4 py-3 text-black placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400 text-sm sm:text-base"
+            className="flex-1 rounded-md border border-[#800f2f] bg-white text-black placeholder-gray-500 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#9d0208] text-sm sm:text-base"
             autoComplete="off"
           />
           <button
             type="submit"
-            className="bg-blue-600 hover:bg-blue-700 transition-colors text-white rounded-md px-4 py-2 text-sm sm:px-6 sm:text-base font-semibold"
+            className="bg-[#9d0208] hover:bg-[#6a040f] transition-colors text-white rounded-md px-4 py-2 text-sm sm:px-6 sm:text-base font-semibold"
           >
             Send
           </button>

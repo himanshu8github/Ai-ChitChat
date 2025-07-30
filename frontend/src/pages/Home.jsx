@@ -17,29 +17,37 @@ const Home = () => {
       opacity: 100,
       duration: 0.8,
     })
-      .from(subtitleRef.current, {
-        y: 20,
-        opacity: 100,
-        duration: 0.6,
-      }, "-=0.4")
-      .from(buttonsRef.current.children, {
-        opacity: 100,
-        y: 20,
-        stagger: 0.2,
-        duration: 0.5,
-      }, "-=0.3");
+      .from(
+        subtitleRef.current,
+        {
+          y: 20,
+          opacity: 100,
+          duration: 0.6,
+        },
+        "-=0.4"
+      )
+      .from(
+        buttonsRef.current.children,
+        {
+          opacity: 100,
+          y: 20,
+          stagger: 0.2,
+          duration: 0.5,
+        },
+        "-=0.3"
+      );
   }, []);
 
   return (
     <>
       <Navbar />
 
-      <div className="min-h-screen bg-gradient-to-br from-[#5e7ce2] to-[#4472ca] flex flex-col items-center justify-center text-white px-4">
+      <div className="min-h-screen bg-gradient-to-br from-[#800f2f] via-[#c1121f] to-[#590d22] flex flex-col items-center justify-center text-white px-4">
         <h1
           ref={titleRef}
           className="text-4xl md:text-5xl font-extrabold mb-4 text-center tracking-tight"
         >
-          Welcome to <span className="text-yellow-200">Ai-ChitChat</span>
+          Welcome to <span className="text-yellow-300">Ai-ChitChat</span>
         </h1>
 
         <p
@@ -55,14 +63,14 @@ const Home = () => {
         >
           <button
             onClick={() => navigate("/login")}
-            className="bg-yellow-300 hover:bg-yellow-400 text-[#1f2d4d] font-semibold py-2 px-6 rounded-xl shadow-md hover:shadow-lg transition-all duration-300"
+            className="bg-[#c1121f] hover:bg-[#a10f1b] text-white font-semibold py-2 px-6 rounded-xl shadow-md hover:shadow-lg transition-all duration-300"
           >
             Login
           </button>
 
           <button
             onClick={() => navigate("/signup")}
-            className="bg-white hover:bg-gray-100 text-[#1f2d4d] font-semibold py-2 px-6 rounded-xl shadow-md hover:shadow-lg transition-all duration-300"
+            className="bg-white hover:bg-gray-100 text-[#590d22] font-semibold py-2 px-6 rounded-xl shadow-md hover:shadow-lg transition-all duration-300"
           >
             Sign Up
           </button>

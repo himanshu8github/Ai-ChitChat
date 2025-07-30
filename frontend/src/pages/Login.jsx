@@ -68,9 +68,9 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#5e7ce2] to-[#4472ca] text-white">
+    <div className="min-h-screen bg-gradient-to-br from-[#800f2f] via-[#c1121f] to-[#590d22] text-white">
       {/* Navbar */}
-      <nav className="flex justify-between items-center px-6 py-3 bg-[#5e7ce2] shadow-md">
+      <nav className="flex justify-between items-center px-6 py-3 bg-[#800f2f] shadow-md">
         <h1 className="text-xl font-bold cursor-pointer" onClick={() => navigate("/")}>
           AI Chat
         </h1>
@@ -86,7 +86,7 @@ const Login = () => {
           ref={formRef}
           className="bg-white text-black p-8 rounded-lg shadow-lg w-full max-w-sm mt-4"
         >
-          <h2 className="text-2xl font-bold mb-4 text-center text-[#5e7ce2]">Login</h2>
+          <h2 className="text-2xl font-bold mb-4 text-center text-[#800f2f]">Login</h2>
 
           <input
             type="email"
@@ -108,18 +108,18 @@ const Login = () => {
 
           <button
             onClick={sendData}
-            className="bg-[#5e7ce2] hover:bg-[#4472ca] text-white font-semibold py-2 px-4 rounded w-full mb-3 transition duration-200"
+            className="bg-[#c1121f] hover:bg-[#a10f1b] text-white font-semibold py-2 px-4 rounded w-full mb-3 transition duration-200"
           >
             Login
           </button>
 
-        <button
-  onClick={handleGoogleLogin}
-  className="bg-white-200 text-black font-semibold py-2 px-4 border border-gray-300 rounded w-full flex items-center justify-center transition duration-200"
->
-  <GoogleIcon />
-  Continue with Google
-</button>
+          <button
+            onClick={handleGoogleLogin}
+            className="bg-white text-black font-semibold py-2 px-4 border border-gray-300 rounded w-full flex items-center justify-center transition duration-200"
+          >
+            <GoogleIcon />
+            Continue with Google
+          </button>
         </div>
       </div>
     </div>
